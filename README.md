@@ -2,7 +2,9 @@
 
 
 
-![浙江大学-logo](./浙江大学-logo.svg)
+<div align="center">
+  <img src="./浙江大学-logo.svg" alt="浙江大学 Logo" width="200"/>
+</div>
 
 ### 作业要求：
 
