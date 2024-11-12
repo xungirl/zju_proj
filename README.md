@@ -5,10 +5,15 @@
 <div align="center">
   <img src="./浙江大学-logo.svg" alt="浙江大学 Logo" width="200"/>
 </div>
-<div align="center">
-  <img src="./Flask.svg" alt="Flask Logo" width="100" style="margin-right: 20px;" />
-  <img src="./sqlite.svg" alt="SQLite Logo" width="100" style="margin: 0 20px;" />
-  <img src="./js.svg" alt="JavaScript Logo" width="100" style="margin-left: 20px;" />
+<div style="display: flex; justify-content: center; align-items: center;">
+  <!-- Left Image -->
+  <img src="./Flask.svg" alt="Flask Logo" width="120" style="margin-right: 50px;" />
+
+  <!-- Center Image -->
+  <img src="./sqlite.svg" alt="SQLite Logo" width="120" style="margin: 0 50px;" />
+
+  <!-- Right Image -->
+  <img src="./js.svg" alt="JavaScript Logo" width="120" style="margin-left: 50px;" />
 </div>
 
 
