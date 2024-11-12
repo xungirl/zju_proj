@@ -13,8 +13,7 @@
   <img src="./sqlite.svg" alt="SQLite Logo" width="120" style="margin: 0 50px;" />
 
   <!-- Right Image -->
-  <img src="./js.svg" alt="JavaScript Logo" width="120" style="margin: 0 50px;" />
-  <img src="./py.svg" alt="py Logo" width="120" style="margin-left: 50px;" />
+  <img src="./js.svg" alt="JavaScript Logo" width="120" style="margin-left: 50px;" />
 </div>
 
 
