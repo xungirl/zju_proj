@@ -20,6 +20,29 @@
 
   RESTful API中，API服务器（Flask应用）负责处理客户端发来的HTTP请求，并返回JSON数据。选择了来自开源天气预报平台openweather提供的免费api接口。用户由前端输入查询天气的查询数据，后端调用api并反馈给前端，数据库存储查询数据。
 
+### 项目结构
+
+```
+project/
+│
+｜── app.py                   # Flask 应用主文件，定义 API 路由和前端页面渲染
+｜── models.py             # 数据库模型和配置文件
+｜── weather.db            # SQLite 数据库文件（运行时自动生成）
+｜
+｜── templates/           # HTML 模板文件夹
+└── index.html           # 前端页面文件，包含查询和删除天气记录的功能
+```
+
+project/
+│
+｜── app.py                   # Flask 应用主文件，定义 API 路由和前端页面渲染
+｜── models.py             # 数据库模型和配置文件
+｜── weather.db            # SQLite 数据库文件（运行时自动生成）
+｜
+｜── templates/           # HTML 模板文件夹
+└── index.html           # 前端页面文件，包含查询和删除天气记录的功能
+
+
 ### 技术栈
 
 -	**后端**：使用Flask框架来构建RESTful API，提供天气查询和CRUD功能。
