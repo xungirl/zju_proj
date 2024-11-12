@@ -2,7 +2,7 @@
 
 
 
-![浙江大学-logo](/Users/xunxun/Downloads/浙江大学-logo.svg)
+![浙江大学-logo](./浙江大学-logo.svg)
 
 ### 作业要求：
 
