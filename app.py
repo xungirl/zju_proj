@@ -1,30 +1,26 @@
+
 from flask import Flask, jsonify, request, render_template
-from flask_sqlalchemy import SQLAlchemy
 from flask_cors import CORS
 from datetime import datetime
 import requests
+from models import db, WeatherRecord  # 导入数据库模型和SQLAlchemy实例
 
 app = Flask(__name__)
 CORS(app)
+
+# 配置数据库 URI
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///weather.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-db = SQLAlchemy(app)
 
-# 定义数据库模型
-class WeatherRecord(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    city = db.Column(db.String(100), nullable=False)
-    date = db.Column(db.Date, nullable=False)
-    temperature = db.Column(db.Float)
-    description = db.Column(db.String(100))
-    humidity = db.Column(db.Integer)
-    wind_speed = db.Column(db.Float)
+# 初始化数据库
+db.init_app(app)
 
+API_KEY = "13014273332be0f221173b22cb4db50d"  # 替换成你的API密钥
+BASE_URL = "http://api.openweathermap.org/data/2.5/weather"
+
+# 创建数据库表
 with app.app_context():
     db.create_all()
-
-API_KEY = "13014273332be0f221173b22cb4db50d"
-BASE_URL = "http://api.openweathermap.org/data/2.5/weather"
 
 # 路由：渲染前端页面
 @app.route('/')
@@ -38,6 +34,7 @@ def get_weather():
     if not city:
         return jsonify({"error": "请提供城市名称"}), 400
 
+    # 调用外部API获取天气数据
     response = requests.get(BASE_URL, params={
         'q': city,
         'appid': API_KEY,
@@ -49,6 +46,7 @@ def get_weather():
     if data['cod'] != 200:
         return jsonify({"error": "无法获取天气数据"}), 404
 
+    # 提取天气信息
     weather_info = {
         "city": data["name"],
         "temperature": data["main"]["temp"],
@@ -57,6 +55,7 @@ def get_weather():
         "wind_speed": data["wind"]["speed"]
     }
 
+    # 将数据保存到数据库
     new_record = WeatherRecord(
         city=weather_info["city"],
         date=datetime.now().date(),
@@ -81,10 +80,30 @@ def get_weather_history():
     results = [
         {
             "date": record.date.strftime("%Y-%m-%d"),
-            "temperature": record.temperature
+            "temperature": record.temperature,
+            "description": record.description,
+            "humidity": record.humidity,
+            "wind_speed": record.wind_speed
         } for record in records
     ]
     return jsonify(results), 200
 
+# 删除指定城市的所有历史记录的API
+@app.route('/api/delete_history', methods=['DELETE'])
+def delete_weather_history():
+    city = request.args.get('city')
+    if not city:
+        return jsonify({"error": "请提供城市名称"}), 400
+
+    # 删除指定城市的所有记录
+    records = WeatherRecord.query.filter_by(city=city).all()
+    if records:
+        for record in records:
+            db.session.delete(record)
+        db.session.commit()
+        return jsonify({"message": f"{city} 的所有记录已删除"}), 200
+    else:
+        return jsonify({"error": "未找到该城市的记录"}), 404
+    
 if __name__ == '__main__':
     app.run(debug=True)
