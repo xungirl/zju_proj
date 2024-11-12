@@ -24,23 +24,16 @@
 
 ```
 project/
-│
+｜
 ｜── app.py                   # Flask 应用主文件，定义 API 路由和前端页面渲染
 ｜── models.py             # 数据库模型和配置文件
 ｜── weather.db            # SQLite 数据库文件（运行时自动生成）
 ｜
 ｜── templates/           # HTML 模板文件夹
-└── index.html           # 前端页面文件，包含查询和删除天气记录的功能
+｜── index.html           # 前端页面文件，包含查询和删除天气记录的功能
 ```
 
-project/
-│
-｜── app.py                   # Flask 应用主文件，定义 API 路由和前端页面渲染
-｜── models.py             # 数据库模型和配置文件
-｜── weather.db            # SQLite 数据库文件（运行时自动生成）
-｜
-｜── templates/           # HTML 模板文件夹
-└── index.html           # 前端页面文件，包含查询和删除天气记录的功能
+
 
 
 ### 技术栈
