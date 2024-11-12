@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weather Query</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f0f0f0;
+        }
+        .container {
+            text-align: center;
+            padding: 20px;
+            background: #fff;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            width: 300px;
+        }
+        input, button {
+            padding: 10px;
+            margin: 5px 0;
+            width: 100%;
+            font-size: 16px;
+        }
+        .weather-info {
+            margin-top: 20px;
+            text-align: left;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Weather Query</h1>
+        <input type="text" id="cityInput" placeholder="Enter city name" />
+        <button onclick="fetchWeather()">Get Weather</button>
+
+        <div class="weather-info" id="weatherInfo"></div>
+    </div>
+
+    <script>
+        async function fetchWeather() {
+            // 获取输入的城市名称
+            const city = document.getElementById("cityInput").value;
+            if (!city) {
+                alert("Please enter a city name!");
+                return;
+            }
+
+            try {
+                // 使用 fetch API 发送 GET 请求到 Flask API
+                const response = await fetch(`http://127.0.0.1:5000/api/weather?city=${city}`);
+                if (!response.ok) {
+                    throw new Error("City not found or API error");
+                }
+
+                // 获取响应的 JSON 数据
+                const data = await response.json();
+
+                // 将天气信息显示在页面上
+                document.getElementById("weatherInfo").innerHTML = `
+                    <h3>Weather in ${data.city}</h3>
+                    <p><strong>Temperature:</strong> ${data.temperature} °C</p>
+                    <p><strong>Description:</strong> ${data.description}</p>
+                    <p><strong>Humidity:</strong> ${data.humidity} %</p>
+                    <p><strong>Wind Speed:</strong> ${data.wind_speed} m/s</p>
+                `;
+            } catch (error) {
+                console.error("Error:", error);
+                document.getElementById("weatherInfo").innerHTML = `<p style="color: red;">Error fetching weather data</p>`;
+            }
+        }
+    </script>
+</body>
+</html>

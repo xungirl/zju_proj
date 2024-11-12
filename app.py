@@ -1,21 +1,16 @@
-'''
-Author: Maggie xungirl1024@gmail.com
-Date: 2024-11-12 12:45:40
-LastEditors: Maggie xungirl1024@gmail.com
-LastEditTime: 2024-11-12 13:54:59
-FilePath: /zju_proj/app.py
-Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
-'''
-from flask import Flask, jsonify, request
+from flask import Flask, jsonify, request, render_template
 from flask_sqlalchemy import SQLAlchemy
+from flask_cors import CORS
 from datetime import datetime
 import requests
 
 app = Flask(__name__)
+CORS(app)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///weather.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
 
+# 定义数据库模型
 class WeatherRecord(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     city = db.Column(db.String(100), nullable=False)
@@ -28,9 +23,15 @@ class WeatherRecord(db.Model):
 with app.app_context():
     db.create_all()
 
-API_KEY = "13014273332be0f221173b22cb4db50d"  # 替换成你的API密钥
+API_KEY = "13014273332be0f221173b22cb4db50d"
 BASE_URL = "http://api.openweathermap.org/data/2.5/weather"
 
+# 路由：渲染前端页面
+@app.route('/')
+def index():
+    return render_template('index.html')
+
+# 获取天气的API
 @app.route('/api/weather', methods=['GET'])
 def get_weather():
     city = request.args.get('city')
@@ -69,6 +70,7 @@ def get_weather():
 
     return jsonify(weather_info), 200
 
+# 获取天气历史记录的API
 @app.route('/api/weather_history', methods=['GET'])
 def get_weather_history():
     city = request.args.get('city')
